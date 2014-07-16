@@ -1,4 +1,7 @@
-test:
+test: build
 	bats test
 
-.PHONY: test
+build:
+	go build -o bin/pomodoro
+
+.PHONY: test build
