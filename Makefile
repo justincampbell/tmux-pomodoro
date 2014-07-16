@@ -1,7 +1,12 @@
-test: build
+test: acceptance
+
+acceptance: build
 	bats test
 
-build:
+build: unit
 	go build -o bin/pomodoro
 
-.PHONY: test build
+unit:
+	go test
+
+.PHONY: test acceptance build unit
