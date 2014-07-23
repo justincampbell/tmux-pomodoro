@@ -5,6 +5,8 @@ before_script:
 go:
   - 1.3
   - tip
+install:
+  - go get -d -t -u
 matrix:
   allow_failures:
     - go: tip
