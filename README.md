@@ -1,1 +1,1 @@
-# pomodoro
+# tmux-pomodoro
