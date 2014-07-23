@@ -5,6 +5,8 @@ setup() {
   mkdir -p $PMDR_TMPDIR
 
   pomodoro=bin/pomodoro
+
+  HOME=$PMDR_TMPDIR
 }
 
 teardown() {
