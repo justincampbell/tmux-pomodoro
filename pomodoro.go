@@ -44,7 +44,7 @@ func parseCommand(existingTime time.Time, now time.Time, args []string) (newTime
 			panic(err)
 		}
 		newTime = now.Add(duration)
-		output = ""
+		output = "25"
 	}
 
 	return
