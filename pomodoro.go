@@ -15,6 +15,14 @@ var (
 	timeFormat = time.RFC3339
 )
 
+var usage = `tmux-pomodoro
+github.com/justincampbell/tmux-pomodoro
+
+  pomodoro         Start a timer for 25 minutes
+  pomodoro status  Show the remaining time, or an exclamation point if done
+  pomodoro clear   Clear the timer
+`
+
 func init() {
 	flag.Parse()
 }
@@ -24,18 +32,28 @@ func main() {
 	now := time.Now()
 	args := flag.Args()
 
-	newTime, output := parseCommand(existingTime, now, args)
+	newTime, output, returnCode := parseCommand(existingTime, now, args)
 
 	if newTime != noTime {
 		writeTime(newTime)
 	}
 
 	fmt.Println(output)
+
+	if returnCode != 0 {
+		os.Exit(returnCode)
+	}
 }
 
-func parseCommand(existingTime time.Time, now time.Time, args []string) (newTime time.Time, output string) {
-	if len(args) > 0 && args[0] == "status" {
-		output = formatRemainingTime(existingTime, now)
+func parseCommand(existingTime time.Time, now time.Time, args []string) (newTime time.Time, output string, returnCode int) {
+	if len(args) > 0 {
+		switch args[0] {
+		case "status":
+			output = formatRemainingTime(existingTime, now)
+		default:
+			output = usage
+			returnCode = 1
+		}
 	} else {
 		duration, _ := time.ParseDuration("25m")
 		newTime = now.Add(duration)

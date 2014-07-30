@@ -23,7 +23,7 @@ func Test_main(t *testing.T) {
 func Test_parseCommand_start(t *testing.T) {
 	now, _ := time.Parse(time.Kitchen, "10:00AM")
 
-	newTime, output := parseCommand(noTime, now, emptyArgs)
+	newTime, output, _ := parseCommand(noTime, now, emptyArgs)
 
 	expected, _ := time.Parse(time.Kitchen, "10:25AM")
 
@@ -35,7 +35,7 @@ func Test_parseCommand_status(t *testing.T) {
 	existingTime, _ := time.Parse(time.Kitchen, "10:25AM")
 	now, _ := time.Parse(time.Kitchen, "10:05AM")
 
-	newTime, output := parseCommand(existingTime, now, []string{"status"})
+	newTime, output, _ := parseCommand(existingTime, now, []string{"status"})
 
 	assert.Equal(t, noTime, newTime)
 	assert.Equal(t, "20", output)
