@@ -61,6 +61,14 @@ func Test_parseCommand_past(t *testing.T) {
 	assert.Equal(t, "❗️", output)
 }
 
+func Test_parseCommand_bad(t *testing.T) {
+	newTime, output, returnCode := parseCommand(noTime, noTime, []string{"foobar"})
+
+	assert.Equal(t, noTime, newTime)
+	assert.Equal(t, usage, output)
+	assert.Equal(t, 1, returnCode)
+}
+
 func Test_readExistingTime(t *testing.T) {
 	os.Setenv("HOME", os.TempDir())
 
