@@ -72,7 +72,7 @@ func readExistingTime() time.Time {
 
 	result, err := time.Parse(timeFormat, contents)
 	if err != nil {
-		panic(err)
+		return noTime
 	}
 
 	return result
