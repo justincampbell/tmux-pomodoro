@@ -1,6 +1,11 @@
 COVERAGE_FILE = coverage.out
+PREFIX=/usr/local
 
 test: acceptance
+
+install: build
+	mkdir -p $(PREFIX)/bin
+	cp -v bin/pomodoro $(PREFIX)/bin/pomodoro
 
 coverage: unit
 	go tool cover -html=$(COVERAGE_FILE)
