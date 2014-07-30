@@ -14,6 +14,12 @@ var emptyArgs []string
 var newTime = make(chan time.Time)
 var output = make(chan string, 1)
 
+func Test_main(t *testing.T) {
+	os.Setenv("HOME", os.TempDir())
+
+	main()
+}
+
 func Test_parseCommand_start(t *testing.T) {
 	now, _ := time.Parse(time.Kitchen, "10:00AM")
 
