@@ -23,7 +23,7 @@ func Test_main(t *testing.T) {
 func Test_parseCommand_start(t *testing.T) {
 	now, _ := time.Parse(time.Kitchen, "10:00AM")
 
-	newTime, output, _ := parseCommand(noTime, now, emptyArgs)
+	newTime, output, _ := parseCommand(noTime, now, []string{"start"})
 
 	expected, _ := time.Parse(time.Kitchen, "10:25AM")
 

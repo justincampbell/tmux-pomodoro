@@ -18,7 +18,7 @@ var (
 var usage = `tmux-pomodoro
 github.com/justincampbell/tmux-pomodoro
 
-  pomodoro         Start a timer for 25 minutes
+  pomodoro start   Start a timer for 25 minutes
   pomodoro status  Show the remaining time, or an exclamation point if done
   pomodoro clear   Clear the timer
 `
@@ -48,6 +48,10 @@ func main() {
 func parseCommand(existingTime time.Time, now time.Time, args []string) (newTime time.Time, output string, returnCode int) {
 	if len(args) > 0 {
 		switch args[0] {
+		case "start":
+			duration, _ := time.ParseDuration("25m")
+			newTime = now.Add(duration)
+			output = "Timer started, 25 minutes remaining"
 		case "status":
 			output = formatRemainingTime(existingTime, now)
 		default:
@@ -55,9 +59,8 @@ func parseCommand(existingTime time.Time, now time.Time, args []string) (newTime
 			returnCode = 1
 		}
 	} else {
-		duration, _ := time.ParseDuration("25m")
-		newTime = now.Add(duration)
-		output = "Timer started, 25 minutes remaining"
+		output = usage
+		returnCode = 0
 	}
 
 	return
