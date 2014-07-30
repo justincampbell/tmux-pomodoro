@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"strings"
 	"testing"
 	"time"
@@ -45,6 +46,8 @@ func Test_parseCommand_done(t *testing.T) {
 }
 
 func Test_readExistingTime(t *testing.T) {
+	os.Setenv("HOME", os.TempDir())
+
 	readExistingTime()
 }
 
