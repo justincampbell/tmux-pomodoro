@@ -48,7 +48,12 @@ func parseCommand(existingTime time.Time, now time.Time, args []string) (newTime
 func formatRemainingTime(existingTime time.Time, now time.Time) string {
 	remaining := existingTime.Sub(now)
 	remainingMinutes := remaining.Minutes()
-	return strconv.FormatFloat(remainingMinutes, 'f', 0, 64)
+
+	if remainingMinutes >= 0 {
+		return strconv.FormatFloat(remainingMinutes, 'f', 0, 64)
+	} else {
+		return "❗️"
+	}
 }
 
 func writeTime(t time.Time) {
