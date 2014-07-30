@@ -34,6 +34,16 @@ func Test_parseCommand_status(t *testing.T) {
 	assert.Equal(t, "20", output)
 }
 
+func Test_parseCommand_done(t *testing.T) {
+	existingTime, _ := time.Parse(time.Kitchen, "10:25AM")
+	now, _ := time.Parse(time.Kitchen, "10:25AM")
+
+	newTime, output := parseCommand(existingTime, now, []string{"status"})
+
+	assert.Equal(t, noTime, newTime)
+	assert.Equal(t, "0", output)
+}
+
 func Test_readExistingTime(t *testing.T) {
 	readExistingTime()
 }
