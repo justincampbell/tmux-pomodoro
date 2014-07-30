@@ -39,7 +39,7 @@ func parseCommand(existingTime time.Time, now time.Time, args []string) (newTime
 	} else {
 		duration, _ := time.ParseDuration("25m")
 		newTime = now.Add(duration)
-		output = "25"
+		output = "Timer started, 25 minutes remaining"
 	}
 
 	return

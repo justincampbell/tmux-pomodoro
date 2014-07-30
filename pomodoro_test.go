@@ -28,7 +28,7 @@ func Test_parseCommand_start(t *testing.T) {
 	expected, _ := time.Parse(time.Kitchen, "10:25AM")
 
 	assert.T(t, expected.Equal(newTime))
-	assert.Equal(t, "25", output)
+	assert.Equal(t, "Timer started, 25 minutes remaining", output)
 }
 
 func Test_parseCommand_status(t *testing.T) {
