@@ -60,8 +60,6 @@ func writeTime(t time.Time) {
 }
 
 func readExistingTime() time.Time {
-	var noTime time.Time
-
 	bytes, err := ioutil.ReadFile(filePath())
 	if err != nil {
 		return noTime
