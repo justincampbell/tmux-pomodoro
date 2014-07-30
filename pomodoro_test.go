@@ -11,9 +11,6 @@ import (
 
 var emptyArgs []string
 
-var newTime = make(chan time.Time)
-var output = make(chan string, 1)
-
 func Test_main(t *testing.T) {
 	os.Setenv("HOME", os.TempDir())
 
