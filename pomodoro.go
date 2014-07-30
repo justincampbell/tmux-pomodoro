@@ -37,10 +37,7 @@ func parseCommand(existingTime time.Time, now time.Time, args []string) (newTime
 	if len(args) > 0 && args[0] == "status" {
 		output = formatRemainingTime(existingTime, now)
 	} else {
-		duration, err := time.ParseDuration("25m")
-		if err != nil {
-			panic(err)
-		}
+		duration, _ := time.ParseDuration("25m")
 		newTime = now.Add(duration)
 		output = "25"
 	}
