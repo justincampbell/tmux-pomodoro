@@ -7,6 +7,9 @@ install: build
 	mkdir -p $(PREFIX)/bin
 	cp -v bin/pomodoro $(PREFIX)/bin/pomodoro
 
+uninstall:
+	rm -vf $(PREFIX)/bin/pomodoro
+
 coverage: unit
 	go tool cover -html=$(COVERAGE_FILE)
 
