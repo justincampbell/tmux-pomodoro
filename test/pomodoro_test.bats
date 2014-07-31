@@ -15,5 +15,5 @@ load test_helper
   run $pomodoro status
 
   [ $status -eq 0 ]
-  echo "$output" | grep "^25🍅 $"
+  echo "$output" | grep "^25 🍅 $"
 }

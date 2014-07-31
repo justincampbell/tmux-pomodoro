@@ -41,7 +41,7 @@ func Test_parseCommand_status(t *testing.T) {
 	newState, output := parseCommand(state, "status")
 
 	assert.Equal(t, state, newState)
-	assert.Equal(t, "20🍅 ", output.text)
+	assert.Equal(t, "20 🍅 ", output.text)
 }
 
 func Test_parseCommand_status_empty(t *testing.T) {
@@ -60,7 +60,7 @@ func Test_parseCommand_done(t *testing.T) {
 	newState, output := parseCommand(state, "status")
 
 	assert.Equal(t, state, newState)
-	assert.Equal(t, "0🍅 ", output.text)
+	assert.Equal(t, "0 🍅 ", output.text)
 }
 
 func Test_parseCommand_past(t *testing.T) {

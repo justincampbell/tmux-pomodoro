@@ -76,7 +76,7 @@ func parseCommand(state State, command string) (newState State, output Output) {
 		if state.endTime == noTime {
 			return
 		}
-		output.text = formatRemainingTime(state.endTime, state.now) + "🍅 "
+		output.text = formatRemainingTime(state.endTime, state.now) + " 🍅 "
 	case "clear":
 		newState.endTime = noTime
 		output.text = "Pomodoro cleared!"
@@ -97,7 +97,7 @@ func formatRemainingTime(existingTime time.Time, now time.Time) string {
 	if remainingMinutes >= 0 {
 		return strconv.FormatFloat(remainingMinutes, 'f', 0, 64)
 	} else {
-		return "❗️ "
+		return "❗️"
 	}
 }
 
