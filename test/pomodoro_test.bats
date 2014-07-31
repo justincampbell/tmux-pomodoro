@@ -4,7 +4,7 @@ load test_helper
   run $pomodoro
 
   [ $status -eq 0 ]
-  echo $output | grep "pomodoro"
+  echo "$output" | grep "pomodoro"
 }
 
 @test "starts a timer and checks the status" {
@@ -15,5 +15,5 @@ load test_helper
   run $pomodoro status
 
   [ $status -eq 0 ]
-  echo $output | grep "^25$"
+  echo "$output" | grep "^25🍅 $"
 }

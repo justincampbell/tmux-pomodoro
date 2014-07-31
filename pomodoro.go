@@ -73,7 +73,7 @@ func parseCommand(state State, command string) (newState State, output Output) {
 		newState.endTime = state.now.Add(duration)
 		output.text = "Timer started, 25 minutes remaining"
 	case "status":
-		output.text = formatRemainingTime(state.endTime, state.now)
+		output.text = formatRemainingTime(state.endTime, state.now) + "🍅 "
 	case "":
 		output.text = usage
 	default:
@@ -91,7 +91,7 @@ func formatRemainingTime(existingTime time.Time, now time.Time) string {
 	if remainingMinutes >= 0 {
 		return strconv.FormatFloat(remainingMinutes, 'f', 0, 64)
 	} else {
-		return "❗️"
+		return "❗️ "
 	}
 }
 
