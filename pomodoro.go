@@ -77,6 +77,9 @@ func parseCommand(state State, command string) (newState State, output Output) {
 			return
 		}
 		output.text = formatRemainingTime(state.endTime, state.now) + "🍅 "
+	case "clear":
+		newState.endTime = noTime
+		output.text = "Pomodoro cleared!"
 	case "":
 		output.text = usage
 	default:
@@ -99,7 +102,10 @@ func formatRemainingTime(existingTime time.Time, now time.Time) string {
 }
 
 func writeTime(t time.Time) {
-	bytes := []byte(t.Format(timeFormat))
+	var bytes []byte
+	if t != noTime {
+		bytes = []byte(t.Format(timeFormat))
+	}
 	err := ioutil.WriteFile(filePath(), bytes, 0644)
 	if err != nil {
 		panic(err)

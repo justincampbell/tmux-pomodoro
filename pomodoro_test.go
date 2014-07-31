@@ -84,6 +84,13 @@ func Test_parseCommand_bad(t *testing.T) {
 	assert.Equal(t, 1, output.returnCode)
 }
 
+func Test_parseCommand_clear(t *testing.T) {
+	newState, output := parseCommand(emptyState, "clear")
+
+	assert.T(t, newState.endTime.Equal(noTime))
+	assert.Equal(t, "Pomodoro cleared!", output.text)
+}
+
 func Test_readExistingTime(t *testing.T) {
 	os.Setenv("HOME", os.TempDir())
 
