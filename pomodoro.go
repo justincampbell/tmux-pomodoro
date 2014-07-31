@@ -23,44 +23,62 @@ github.com/justincampbell/tmux-pomodoro
   pomodoro clear   Clear the timer
 `
 
+type State struct {
+	endTime time.Time
+	now     time.Time
+}
+
+type Output struct {
+	text       string
+	returnCode int
+}
+
 func init() {
 	flag.Parse()
 }
 
 func main() {
-	existingTime := readExistingTime()
-	now := time.Now()
-	args := flag.Args()
-
-	newTime, output, returnCode := parseCommand(existingTime, now, args)
-
-	if newTime != noTime {
-		writeTime(newTime)
+	state := State{
+		endTime: readExistingTime(),
+		now:     time.Now(),
 	}
 
-	fmt.Println(output)
+	args := flag.Args()
+	var command string
+	if len(args) == 0 {
+		command = ""
+	} else {
+		command = args[0]
+	}
 
-	if returnCode != 0 {
-		os.Exit(returnCode)
+	newState, output := parseCommand(state, command)
+
+	if newState.endTime != state.endTime {
+		writeTime(newState.endTime)
+	}
+
+	fmt.Println(output.text)
+
+	if output.returnCode != 0 {
+		os.Exit(output.returnCode)
 	}
 }
 
-func parseCommand(existingTime time.Time, now time.Time, args []string) (newTime time.Time, output string, returnCode int) {
-	if len(args) > 0 {
-		switch args[0] {
-		case "start":
-			duration, _ := time.ParseDuration("25m")
-			newTime = now.Add(duration)
-			output = "Timer started, 25 minutes remaining"
-		case "status":
-			output = formatRemainingTime(existingTime, now)
-		default:
-			output = usage
-			returnCode = 1
-		}
-	} else {
-		output = usage
-		returnCode = 0
+func parseCommand(state State, command string) (newState State, output Output) {
+	newState = state
+
+	switch command {
+	case "start":
+		duration, _ := time.ParseDuration("25m")
+		newState.endTime = state.now.Add(duration)
+		output.text = "Timer started, 25 minutes remaining"
+	case "status":
+		output.text = formatRemainingTime(state.endTime, state.now)
+	case "":
+		output.text = usage
+	default:
+		output.text = usage
+		output.returnCode = 1
 	}
 
 	return

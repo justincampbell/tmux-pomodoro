@@ -11,6 +11,12 @@ import (
 
 var emptyArgs []string
 
+var aTime, _ = time.Parse(time.Kitchen, "10:00AM")
+var emptyState = State{
+	endTime: noTime,
+	now:     aTime,
+}
+
 func Test_main(t *testing.T) {
 	os.Setenv("HOME", os.TempDir())
 
@@ -18,52 +24,56 @@ func Test_main(t *testing.T) {
 }
 
 func Test_parseCommand_start(t *testing.T) {
-	now, _ := time.Parse(time.Kitchen, "10:00AM")
-
-	newTime, output, _ := parseCommand(noTime, now, []string{"start"})
+	newState, output := parseCommand(emptyState, "start")
 
 	expected, _ := time.Parse(time.Kitchen, "10:25AM")
 
-	assert.T(t, expected.Equal(newTime))
-	assert.Equal(t, "Timer started, 25 minutes remaining", output)
+	assert.T(t, expected.Equal(newState.endTime))
+	assert.Equal(t, "Timer started, 25 minutes remaining", output.text)
 }
 
 func Test_parseCommand_status(t *testing.T) {
-	existingTime, _ := time.Parse(time.Kitchen, "10:25AM")
+	endTime, _ := time.Parse(time.Kitchen, "10:25AM")
 	now, _ := time.Parse(time.Kitchen, "10:05AM")
 
-	newTime, output, _ := parseCommand(existingTime, now, []string{"status"})
+	state := State{endTime: endTime, now: now}
 
-	assert.Equal(t, noTime, newTime)
-	assert.Equal(t, "20", output)
+	newState, output := parseCommand(state, "status")
+
+	assert.Equal(t, state, newState)
+	assert.Equal(t, "20", output.text)
 }
 
 func Test_parseCommand_done(t *testing.T) {
-	existingTime, _ := time.Parse(time.Kitchen, "10:25AM")
+	endTime, _ := time.Parse(time.Kitchen, "10:25AM")
 	now, _ := time.Parse(time.Kitchen, "10:25AM")
 
-	newTime, output, _ := parseCommand(existingTime, now, []string{"status"})
+	state := State{endTime: endTime, now: now}
 
-	assert.Equal(t, noTime, newTime)
-	assert.Equal(t, "0", output)
+	newState, output := parseCommand(state, "status")
+
+	assert.Equal(t, state, newState)
+	assert.Equal(t, "0", output.text)
 }
 
 func Test_parseCommand_past(t *testing.T) {
-	existingTime, _ := time.Parse(time.Kitchen, "10:25AM")
+	endTime, _ := time.Parse(time.Kitchen, "10:25AM")
 	now, _ := time.Parse(time.Kitchen, "10:35AM")
 
-	newTime, output, _ := parseCommand(existingTime, now, []string{"status"})
+	state := State{endTime: endTime, now: now}
 
-	assert.Equal(t, noTime, newTime)
-	assert.Equal(t, "❗️", output)
+	newState, output := parseCommand(state, "status")
+
+	assert.Equal(t, state, newState)
+	assert.Equal(t, "❗️", output.text)
 }
 
 func Test_parseCommand_bad(t *testing.T) {
-	newTime, output, returnCode := parseCommand(noTime, noTime, []string{"foobar"})
+	newState, output := parseCommand(emptyState, "foobar")
 
-	assert.Equal(t, noTime, newTime)
-	assert.Equal(t, usage, output)
-	assert.Equal(t, 1, returnCode)
+	assert.Equal(t, emptyState, newState)
+	assert.Equal(t, usage, output.text)
+	assert.Equal(t, 1, output.returnCode)
 }
 
 func Test_readExistingTime(t *testing.T) {
