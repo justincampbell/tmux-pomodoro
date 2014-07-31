@@ -44,6 +44,13 @@ func Test_parseCommand_status(t *testing.T) {
 	assert.Equal(t, "20🍅 ", output.text)
 }
 
+func Test_parseCommand_status_empty(t *testing.T) {
+	newState, output := parseCommand(emptyState, "status")
+
+	assert.Equal(t, emptyState, newState)
+	assert.Equal(t, "", output.text)
+}
+
 func Test_parseCommand_done(t *testing.T) {
 	endTime, _ := time.Parse(time.Kitchen, "10:25AM")
 	now, _ := time.Parse(time.Kitchen, "10:25AM")

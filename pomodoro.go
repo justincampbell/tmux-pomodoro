@@ -73,6 +73,9 @@ func parseCommand(state State, command string) (newState State, output Output) {
 		newState.endTime = state.now.Add(duration)
 		output.text = "Timer started, 25 minutes remaining"
 	case "status":
+		if state.endTime == noTime {
+			return
+		}
 		output.text = formatRemainingTime(state.endTime, state.now) + "🍅 "
 	case "":
 		output.text = usage
