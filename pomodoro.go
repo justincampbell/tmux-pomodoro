@@ -63,8 +63,6 @@ func main() {
 	if output.returnCode != 0 {
 		os.Exit(output.returnCode)
 	}
-
-	refreshTmux()
 }
 
 func refreshTmux() {
@@ -79,6 +77,7 @@ func parseCommand(state State, command string) (newState State, output Output) {
 		duration, _ := time.ParseDuration("25m")
 		newState.endTime = state.now.Add(duration)
 		output.text = "Timer started, 25 minutes remaining"
+		refreshTmux()
 	case "status":
 		if state.endTime == noTime {
 			return
@@ -87,6 +86,7 @@ func parseCommand(state State, command string) (newState State, output Output) {
 	case "clear":
 		newState.endTime = noTime
 		output.text = "Pomodoro cleared!"
+		refreshTmux()
 	case "":
 		output.text = usage
 	default:
