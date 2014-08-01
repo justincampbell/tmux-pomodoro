@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"os/exec"
 	"strconv"
 	"strings"
 	"time"
@@ -62,6 +63,12 @@ func main() {
 	if output.returnCode != 0 {
 		os.Exit(output.returnCode)
 	}
+
+	refreshTmux()
+}
+
+func refreshTmux() {
+	exec.Command("tmux", "refresh-client", "-S").Start()
 }
 
 func parseCommand(state State, command string) (newState State, output Output) {
