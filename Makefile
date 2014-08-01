@@ -3,7 +3,7 @@ PREFIX=/usr/local
 
 COVERAGE_FILE = coverage.out
 
-VERSION=1.0.1
+VERSION=1.1.0
 TAG=v$(VERSION)
 
 ARCHIVE=tmux-pomodoro-$(TAG).tar.gz
