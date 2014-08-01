@@ -41,10 +41,14 @@ coverage: unit
 acceptance: build
 	bats test
 
-build: unit
+build: dependencies unit
 	go build -o bin/pomodoro
 
-unit:
+unit: dependencies
 	go test -coverprofile=$(COVERAGE_FILE) -timeout 25ms
 
-.PHONY: acceptance build coverage install release sha tag test uninstall unit
+dependencies:
+	go get -t
+	go get code.google.com/p/go.tools/cmd/cover
+
+.PHONY: acceptance build coverage dependencies install release sha tag test uninstall unit
