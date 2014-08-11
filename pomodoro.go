@@ -16,6 +16,8 @@ var (
 	timeFormat = time.RFC3339
 )
 
+var duration, _ = time.ParseDuration("25m")
+
 var usage = `tmux-pomodoro
 github.com/justincampbell/tmux-pomodoro
 
@@ -74,7 +76,6 @@ func parseCommand(state State, command string) (newState State, output Output) {
 
 	switch command {
 	case "start":
-		duration, _ := time.ParseDuration("25m")
 		newState.endTime = state.now.Add(duration)
 		output.text = "Timer started, 25 minutes remaining"
 		refreshTmux()
