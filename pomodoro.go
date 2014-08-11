@@ -66,7 +66,7 @@ func main() {
 }
 
 func refreshTmux() {
-	exec.Command("tmux", "refresh-client", "-S").Start()
+	_ = exec.Command("tmux", "refresh-client", "-S").Start()
 }
 
 func parseCommand(state State, command string) (newState State, output Output) {
