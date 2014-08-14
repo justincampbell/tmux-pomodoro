@@ -16,6 +16,16 @@
 
 ## Usage
 
+### Tmux Configuration
+
+```tmux
+# Place the current pomodoro status on the right side of your status bar
+set -g status-right '#(pomodoro status)'
+
+# Map a key to start a timer
+bind-key p run-shell 'pomodoro start'
+```
+
 ### Commands
 
 * `start` Start a timer for 25 minutes
