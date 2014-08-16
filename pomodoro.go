@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"os/exec"
 	"strconv"
@@ -78,6 +79,8 @@ func parseCommand(state State, command string) (newState State, output Output) {
 	case "start":
 		newState.endTime = state.now.Add(duration)
 		output.text = "Timer started, 25 minutes remaining"
+		killRunningBeepers()
+		startBeeper()
 		refreshTmux()
 	case "status":
 		if state.endTime == noTime {
@@ -87,6 +90,11 @@ func parseCommand(state State, command string) (newState State, output Output) {
 	case "clear":
 		newState.endTime = noTime
 		output.text = "Pomodoro cleared!"
+		killRunningBeepers()
+		refreshTmux()
+	case "beep":
+		<-time.NewTicker(duration).C
+		_ = exec.Command("tmux", "display-message", "Pomodoro done, take a break!").Run()
 		refreshTmux()
 	case "":
 		output.text = usage
@@ -96,6 +104,36 @@ func parseCommand(state State, command string) (newState State, output Output) {
 	}
 
 	return
+}
+
+func startBeeper() {
+	command := exec.Command("pomodoro", "beep")
+	err := command.Start()
+	if err != nil {
+		log.Println(err)
+	}
+
+	bytes := []byte(strconv.Itoa(command.Process.Pid))
+	err = ioutil.WriteFile(pidFilePath(), bytes, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func killRunningBeepers() {
+	bytes, err := ioutil.ReadFile(pidFilePath())
+	if err != nil {
+		return
+	}
+	pid, err := strconv.Atoi(string(bytes[:]))
+	if err != nil {
+		return
+	}
+	process, err := os.FindProcess(pid)
+	if err != nil {
+		return
+	}
+	_ = process.Kill()
 }
 
 func formatRemainingTime(existingTime time.Time, now time.Time) string {
@@ -139,6 +177,10 @@ func readExistingTime() time.Time {
 
 func filePath() string {
 	return homeDir() + "/.pomodoro"
+}
+
+func pidFilePath() string {
+	return homeDir() + "/.pomodoro.pid"
 }
 
 func homeDir() string {
