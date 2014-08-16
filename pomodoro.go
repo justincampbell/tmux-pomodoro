@@ -154,7 +154,7 @@ func writeTime(t time.Time) {
 	}
 	err := ioutil.WriteFile(filePath(), bytes, 0644)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 }
 
