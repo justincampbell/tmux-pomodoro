@@ -12,13 +12,10 @@ import (
 	"time"
 )
 
-var (
-	noTime     time.Time
-	timeFormat = time.RFC3339
-)
+const timeFormat = time.RFC3339
 
 var duration, _ = time.ParseDuration("25m")
-
+var noTime time.Time
 var usage = `tmux-pomodoro
 github.com/justincampbell/tmux-pomodoro
 
