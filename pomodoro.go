@@ -10,6 +10,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/justincampbell/tmux-pomodoro/tmux"
 )
 
 const timeFormat = time.RFC3339
@@ -66,7 +68,7 @@ func main() {
 }
 
 func refreshTmux() {
-	_ = exec.Command("tmux", "refresh-client", "-S").Start()
+	_ = tmux.RefreshClient("-S")
 }
 
 func parseCommand(state State, command string) (newState State, output Output) {
@@ -91,7 +93,7 @@ func parseCommand(state State, command string) (newState State, output Output) {
 		refreshTmux()
 	case "beep":
 		<-time.NewTicker(duration).C
-		_ = exec.Command("tmux", "display-message", "Pomodoro done, take a break!").Run()
+		_ = tmux.DisplayMessage("Pomodoro done, take a break!")
 		refreshTmux()
 	case "":
 		output.text = usage
