@@ -105,18 +105,20 @@ func parseCommand(state State, command string) (newState State, output Output) {
 	return
 }
 
-func startBeeper() {
+func startBeeper() (err error) {
 	command := exec.Command("pomodoro", "beep")
-	err := command.Start()
+	err = command.Start()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	bytes := []byte(strconv.Itoa(command.Process.Pid))
+	err = ioutil.WriteFile(pidFilePath(), bytes, 0644)
 	if err != nil {
 		log.Println(err)
 	}
 
-	bytes := []byte(strconv.Itoa(command.Process.Pid))
-	err = ioutil.WriteFile(pidFilePath(), bytes, 0644)
-	if err != nil {
-		log.Fatal(err)
-	}
+	return
 }
 
 func killRunningBeepers() {
