@@ -49,6 +49,6 @@ unit: dependencies
 
 dependencies:
 	go get -t
-	go get code.google.com/p/go.tools/cmd/cover
+	go get golang.org/x/tools/cmd/cover
 
 .PHONY: acceptance build coverage dependencies install release sha tag test uninstall unit
