@@ -9,7 +9,9 @@ TAG=v$(VERSION)
 ARCHIVE=tmux-pomodoro-$(TAG).tar.gz
 ARCHIVE_URL=$(HOMEPAGE)/archive/$(TAG).tar.gz
 
-test: acceptance
+all: unit build
+
+test: unit acceptance
 
 release: tag sha
 
@@ -41,7 +43,7 @@ coverage: unit
 acceptance: build
 	bats test
 
-build: dependencies unit
+build: dependencies
 	go build -o bin/pomodoro
 
 unit: dependencies
@@ -51,4 +53,4 @@ dependencies:
 	go get -t
 	go get golang.org/x/tools/cmd/cover
 
-.PHONY: acceptance build coverage dependencies install release sha tag test uninstall unit
+.PHONY: all acceptance build coverage dependencies install release sha tag test uninstall unit
