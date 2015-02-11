@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/bmizerany/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 var emptyArgs []string
@@ -28,7 +28,7 @@ func Test_parseCommand_start(t *testing.T) {
 
 	expected, _ := time.Parse(time.Kitchen, "10:25AM")
 
-	assert.T(t, expected.Equal(newState.endTime))
+	assert.Equal(t, expected, newState.endTime)
 	assert.Equal(t, "Timer started, 25 minutes remaining", output.text)
 }
 
@@ -87,7 +87,7 @@ func Test_parseCommand_bad(t *testing.T) {
 func Test_parseCommand_clear(t *testing.T) {
 	newState, output := parseCommand(emptyState, "clear")
 
-	assert.T(t, newState.endTime.Equal(noTime))
+	assert.Equal(t, noTime, newState.endTime)
 	assert.Equal(t, "Pomodoro cleared!", output.text)
 }
 
@@ -98,5 +98,5 @@ func Test_readExistingTime(t *testing.T) {
 }
 
 func Test_filePath(t *testing.T) {
-	assert.T(t, strings.HasSuffix(filePath(), "/.pomodoro"))
+	assert.Equal(t, true, strings.HasSuffix(filePath(), "/.pomodoro"))
 }
