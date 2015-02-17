@@ -47,8 +47,13 @@ build: dependencies unit
 unit: dependencies
 	go test -coverprofile=$(COVERAGE_FILE) -timeout 25ms
 
+lint:
+	gometalinter ./...
+
 dependencies:
 	go get -t
 	go get golang.org/x/tools/cmd/cover
+	go get github.com/alecthomas/gometalinter
+	gometalinter --install
 
 .PHONY: acceptance build coverage dependencies install release sha tag test uninstall unit
