@@ -9,7 +9,7 @@ TAG=v$(VERSION)
 ARCHIVE=tmux-pomodoro-$(TAG).tar.gz
 ARCHIVE_URL=$(HOMEPAGE)/archive/$(TAG).tar.gz
 
-test: acceptance
+test: acceptance lint
 
 release: tag sha
 
