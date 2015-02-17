@@ -26,11 +26,15 @@ github.com/justincampbell/tmux-pomodoro
   pomodoro clear   Clear the timer
 `
 
+// State is the state of the world passed through the functions to determine
+// side-effects.
 type State struct {
 	endTime time.Time
 	now     time.Time
 }
 
+// Output has fields for functions to set/append when they intend to output to
+// the user.
 type Output struct {
 	text       string
 	returnCode int
@@ -79,7 +83,7 @@ func parseCommand(state State, command string) (newState State, output Output) {
 		newState.endTime = state.now.Add(duration)
 		output.text = "Timer started, 25 minutes remaining"
 		killRunningBeepers()
-		startBeeper()
+		_ = startBeeper()
 		refreshTmux()
 	case "status":
 		if state.endTime == noTime {
@@ -143,9 +147,9 @@ func formatRemainingTime(existingTime time.Time, now time.Time) string {
 
 	if remainingMinutes >= 0 {
 		return strconv.FormatFloat(remainingMinutes, 'f', 0, 64)
-	} else {
-		return "❗️"
 	}
+
+	return "❗️"
 }
 
 func writeTime(t time.Time) {
