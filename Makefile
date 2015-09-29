@@ -9,7 +9,7 @@ TAG=v$(VERSION)
 ARCHIVE=tmux-pomodoro-$(TAG).tar.gz
 ARCHIVE_URL=$(HOMEPAGE)/archive/$(TAG).tar.gz
 
-test: acceptance lint
+test: acceptance
 
 release: tag sha
 
@@ -38,21 +38,23 @@ uninstall:
 coverage: unit
 	go tool cover -html=$(COVERAGE_FILE)
 
-acceptance: build
+acceptance: build unit
 	bats test
 
-build: dependencies unit
+build: build-dependencies
 	go build -o bin/pomodoro
 
-unit: dependencies
+unit: build-dependencies
 	go test -coverprofile=$(COVERAGE_FILE) -timeout 25ms
 
-lint:
-	gometalinter ./...
-
-dependencies:
+build-dependencies:
 	go get -t
 	go get golang.org/x/tools/cmd/cover
+
+lint: lint-dependencies
+	gometalinter ./...
+
+lint-dependencies:
 	go get github.com/alecthomas/gometalinter
 	gometalinter --install
 
