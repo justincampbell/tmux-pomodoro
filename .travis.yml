@@ -5,6 +5,7 @@ before_script:
   - go get golang.org/x/tools/cmd/cover
 go:
   - 1.4
+  - 1.5
   - tip
 matrix:
   allow_failures:
