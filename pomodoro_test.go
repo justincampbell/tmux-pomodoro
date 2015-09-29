@@ -9,8 +9,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var emptyArgs []string
-
 var aTime, _ = time.Parse(time.Kitchen, "10:00AM")
 var emptyState = State{
 	endTime: noTime,
@@ -18,7 +16,7 @@ var emptyState = State{
 }
 
 func Test_main(t *testing.T) {
-	os.Setenv("HOME", os.TempDir())
+	_ = os.Setenv("HOME", os.TempDir())
 
 	main()
 }
@@ -92,7 +90,7 @@ func Test_parseCommand_clear(t *testing.T) {
 }
 
 func Test_readExistingTime(t *testing.T) {
-	os.Setenv("HOME", os.TempDir())
+	_ = os.Setenv("HOME", os.TempDir())
 
 	readExistingTime()
 }
