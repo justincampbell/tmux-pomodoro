@@ -1,12 +1,36 @@
 language: go
-before_script:
-  - git clone --depth 1 https://github.com/sstephenson/bats.git
-  - export PATH=$PATH:bats/bin
-  - go get golang.org/x/tools/cmd/cover
+
+sudo: false
+
 go:
-  - 1.4
   - 1.5
   - tip
+
 matrix:
   allow_failures:
     - go: tip
+
+install:
+  - go get -t
+
+before_script:
+  - git clone --depth 1 https://github.com/sstephenson/bats.git
+  - export PATH=$PATH:bats/bin
+
+before_deploy:
+  - go get github.com/mitchellh/gox
+  - mkdir -p release/
+  - cd release/
+  - gox -os "darwin linux" ../...
+  - for f in `ls`; do mv $f tmux-pomodoro; tar -zcvf $f.tar.gz tmux-pomodoro; rm tmux-pomodoro; done
+
+deploy:
+  provider: releases
+  api_key:
+    secure: U9e+sl2WSWODXtudJLuYy3lEqxboXjuKoDsEFmlYiol023Q21d68Mnl0gHBpPZlARQqUXenKKpnc0a3ncM2TFDrjT8IFI2MLqqdvEXOmLGxObuLvOYKpxsypZzsMOP5E6Lt7OzI9OKGREo54Ty7kBW92TGna07+k9rbcNgkG7Zs=
+  file: tmux-pomodoro_*
+  file_glob: true
+  skip_cleanup: true
+  on:
+    repo: justincampbell/tmux-pomodoro
+    tags: true
