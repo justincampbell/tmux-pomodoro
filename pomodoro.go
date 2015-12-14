@@ -26,7 +26,7 @@ github.com/justincampbell/tmux-pomodoro
   pomodoro status  Show the remaining time, or an exclamation point if done
   pomodoro clear   Clear the timer
 `
-const version = "v1.2.0"
+const version = "v1.2.1"
 
 // State is the state of the world passed through the functions to determine
 // side-effects.
