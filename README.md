@@ -2,17 +2,15 @@
 
 ## Installation
 
-### [Homebrew](http://brew.sh)
+1. Download the latest package for your platform from the [Releases page](https://github.com/justincampbell/tmux-pomodoro/releases/latest).
+2. Untar the package with `tar -zxvf tmux-pomodoro*.tar.gz`.
+3. Move the extracted `pomodoro` file to a directory in your `$PATH` (for most systems, this will be `/usr/local/bin/`).
 
-    brew tap justincampbell/formulae
-    brew install tmux-pomodoro
+Or, if you have a [Go development environment](https://golang.org/doc/install):
 
-### Package
-
-    wget -O tmux-pomodoro-latest.tar.gz https://github.com/justincampbell/tmux-pomodoro/archive/latest.tar.gz tmux-pomodoro
-    tar -zxvf tmux-pomodoro-latest.tar.gz
-    cd tmux-pomodoro-latest/
-    make install
+```
+go get github.com/justincampbell/tmux-pomodoro
+```
 
 ## Usage
 
