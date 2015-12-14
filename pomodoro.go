@@ -46,7 +46,6 @@ func init() {
 	flag.Usage = func() {
 		fmt.Printf("tmux-pomodoro %s\n", version)
 		fmt.Printf("%s\n", strings.TrimSpace(usage))
-		flag.PrintDefaults()
 	}
 
 	flag.Parse()
@@ -109,6 +108,8 @@ func parseCommand(state State, command string) (newState State, output Output) {
 		<-time.NewTicker(duration).C
 		_ = tmux.DisplayMessage("Pomodoro done, take a break!")
 		refreshTmux()
+	case "":
+		flag.Usage()
 	default:
 		flag.Usage()
 		output.returnCode = 1

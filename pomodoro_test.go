@@ -15,12 +15,6 @@ var emptyState = State{
 	now:     aTime,
 }
 
-func Test_main(t *testing.T) {
-	_ = os.Setenv("HOME", os.TempDir())
-
-	main()
-}
-
 func Test_parseCommand_start(t *testing.T) {
 	newState, output := parseCommand(emptyState, "start")
 
@@ -78,7 +72,7 @@ func Test_parseCommand_bad(t *testing.T) {
 	newState, output := parseCommand(emptyState, "foobar")
 
 	assert.Equal(t, emptyState, newState)
-	assert.Equal(t, usage, output.text)
+	assert.Equal(t, "", output.text)
 	assert.Equal(t, 1, output.returnCode)
 }
 
