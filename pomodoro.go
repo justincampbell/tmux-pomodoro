@@ -18,13 +18,15 @@ const timeFormat = time.RFC3339
 
 var duration, _ = time.ParseDuration("25m")
 var noTime time.Time
-var usage = `tmux-pomodoro
+
+const usage = `
 github.com/justincampbell/tmux-pomodoro
 
   pomodoro start   Start a timer for 25 minutes
   pomodoro status  Show the remaining time, or an exclamation point if done
   pomodoro clear   Clear the timer
 `
+const version = "v1.2.0"
 
 // State is the state of the world passed through the functions to determine
 // side-effects.
@@ -41,6 +43,12 @@ type Output struct {
 }
 
 func init() {
+	flag.Usage = func() {
+		fmt.Printf("tmux-pomodoro %s\n", version)
+		fmt.Printf("%s\n", strings.TrimSpace(usage))
+		flag.PrintDefaults()
+	}
+
 	flag.Parse()
 }
 
@@ -64,7 +72,9 @@ func main() {
 		writeTime(newState.endTime)
 	}
 
-	fmt.Println(output.text)
+	if output.text != "" {
+		fmt.Println(output.text)
+	}
 
 	if output.returnCode != 0 {
 		os.Exit(output.returnCode)
@@ -99,10 +109,8 @@ func parseCommand(state State, command string) (newState State, output Output) {
 		<-time.NewTicker(duration).C
 		_ = tmux.DisplayMessage("Pomodoro done, take a break!")
 		refreshTmux()
-	case "":
-		output.text = usage
 	default:
-		output.text = usage
+		flag.Usage()
 		output.returnCode = 1
 	}
 
