@@ -11,6 +11,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/justincampbell/anybar"
 	"github.com/justincampbell/tmux-pomodoro/tmux"
 )
 
@@ -92,6 +93,7 @@ func parseCommand(state State, command string) (newState State, output Output) {
 		newState.endTime = state.now.Add(duration)
 		output.text = "Timer started, 25 minutes remaining"
 		killRunningBeepers()
+		anybar.Green()
 		_ = startBeeper()
 		refreshTmux()
 	case "status":
@@ -102,10 +104,12 @@ func parseCommand(state State, command string) (newState State, output Output) {
 	case "clear":
 		newState.endTime = noTime
 		output.text = "Pomodoro cleared!"
+		anybar.White()
 		killRunningBeepers()
 		refreshTmux()
 	case "beep":
 		<-time.NewTicker(duration).C
+		anybar.Exclamation()
 		_ = tmux.DisplayMessage("Pomodoro done, take a break!")
 		refreshTmux()
 	case "":
