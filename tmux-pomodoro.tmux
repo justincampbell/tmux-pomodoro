@@ -7,10 +7,29 @@ readonly pomodoro_start_key="$(get_tmux_option "@pomodoro-start-key" "p")"
 readonly pomodoro_clear_key="$(get_tmux_option "@pomodoro-clear-key" "P")"
 readonly pomodoro_cmd="$(get_pomodoro_cmd)"
 
+append_option() {
+  local dir=$1
+  local options=$2
+  local appendix=$3
+  if ! echo "$options" | grep -qF "$appendix"; then
+    case "$dir" in
+      "left")
+        options="$appendix $options"
+        ;;
+      "right")
+        options="$options $appendix"
+        ;;
+    esac
+  fi
+  echo "$options"
+}
+
 update_tmux_option() {
   local option=$1
-  local option_value=$(get_tmux_option "$option")
-  local new_option_value='#('"$pomodoro_cmd"' status) '"$option_value"
+  local option_value
+  option_value=$(get_tmux_option "$option")
+  local new_option_value
+  new_option_value=$(append_option left "$option_value" '#('"$pomodoro_cmd"' status)')
   tmux set -g "$option" "$new_option_value"
 }
 
