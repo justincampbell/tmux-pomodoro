@@ -14,6 +14,7 @@ build: build-dependencies
 build-dependencies:
 	go get -t
 	go get golang.org/x/tools/cmd/cover
+	go get github.com/0xAX/notificator
 
 unit: build-dependencies
 	go test -coverprofile=$(COVERAGE_FILE) -timeout 25ms
