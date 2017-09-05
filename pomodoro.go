@@ -12,12 +12,14 @@ import (
 	"time"
 
 	"github.com/justincampbell/tmux-pomodoro/tmux"
+	"github.com/0xAX/notificator"
 )
 
 const timeFormat = time.RFC3339
 
 var duration, _ = time.ParseDuration("25m")
 var noTime time.Time
+var notify *notificator.Notificator
 
 const usage = `
 github.com/justincampbell/tmux-pomodoro
@@ -65,6 +67,10 @@ func main() {
 		command = args[0]
 	}
 
+	notify = notificator.New(notificator.Options{
+		AppName:     "tmux-pomodoro",
+	})
+
 	newState, output := parseCommand(state, command)
 
 	if newState.endTime != state.endTime {
@@ -106,7 +112,9 @@ func parseCommand(state State, command string) (newState State, output Output) {
 		refreshTmux()
 	case "beep":
 		<-time.NewTicker(duration).C
-		_ = tmux.DisplayMessage("Pomodoro done, take a break!")
+		var message = "Pomodoro done, take a break!"
+		_ = tmux.DisplayMessage(message)
+		notify.Push("Pomodoro", message, "", notificator.UR_NORMAL)
 		refreshTmux()
 	case "":
 		flag.Usage()
