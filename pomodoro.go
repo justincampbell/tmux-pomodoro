@@ -127,7 +127,11 @@ func parseCommand(state State, command string) (newState State, output Output) {
 }
 
 func startBeeper() (err error) {
-	command := exec.Command("pomodoro", "beep")
+	ex, err := os.Executable()
+	if err != nil {
+		panic(err)
+	}
+	command := exec.Command(ex, "beep")
 	err = command.Start()
 	if err != nil {
 		log.Println(err)
